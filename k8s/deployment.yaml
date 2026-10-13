@@ -1,0 +1,3 @@
+# Phase 4 placeholder: Deployment ai-model-serving, image ai-model-serving:dev.
+# Define port 8000, CPU/memory requests and limits, readiness/liveness probes,
+# one initial replica and rolling update strategy.

@@ -1,0 +1,2 @@
+# Phase 4 placeholder: ClusterIP Service ai-model-serving, port/targetPort 8000.
+# Match the Deployment labels.

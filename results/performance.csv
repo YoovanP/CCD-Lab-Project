@@ -1,0 +1,1 @@
+run_id,scenario,hardware,kubernetes_version,model_revision,image_tag,concurrency,duration_s,total_requests,successful_requests,throughput_rps,mean_latency_ms,p95_latency_ms,error_rate,pod_cpu_millicores,pod_memory_mib,ready_replicas_min,ready_replicas_max,scale_out_delay_s,scale_in_delay_s,notes

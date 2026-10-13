@@ -1,0 +1,2 @@
+# Phase 4 placeholder: autoscaling/v2 CPU HPA for ai-model-serving.
+# Tune target utilization, replica bounds and stabilization to measured capacity.

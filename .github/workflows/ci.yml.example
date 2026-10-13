@@ -1,0 +1,2 @@
+# Phase 5 template only. Rename to ci.yml after implementing a real workflow.
+# Add tests, Docker build, manifest validation and configured registry/deployment steps.

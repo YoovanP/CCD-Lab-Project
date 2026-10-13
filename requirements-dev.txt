@@ -1,0 +1,8 @@
+# Tested test-client and pytest pins.
+-r requirements.txt
+httpcore==1.0.9
+httpx==0.28.1
+iniconfig==2.3.1
+pluggy==1.6.0
+pytest==8.3.5
+colorama==0.4.6 ; sys_platform == "win32"
