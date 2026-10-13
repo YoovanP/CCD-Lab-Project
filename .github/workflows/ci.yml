@@ -133,18 +133,35 @@ jobs:
       - name: Exercise safe and unsafe deployment bundles (stubbed AWS CLI)
         run: bash infra/terraform/tests/deploy_doc_safety_test.sh
 
+  frontend:
+    name: Studio contract tests (offline)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check browser module syntax
+        run: |
+          node --check app/static/studio-core.mjs
+          node --check app/static/studio.mjs
+      - name: Test studio API contracts without model or provider calls
+        run: node --test tests/frontend/studio-core.test.mjs
+
   ci-success:
     name: CI gate
-    needs: [tests, manifests, docker, terraform]
+    needs: [tests, manifests, docker, terraform, frontend]
     if: always()
     runs-on: ubuntu-latest
     steps:
       - name: All CI jobs passed
         run: |
-          echo "tests=${{ needs.tests.result }} manifests=${{ needs.manifests.result }} docker=${{ needs.docker.result }} terraform=${{ needs.terraform.result }}"
+          echo "tests=${{ needs.tests.result }} manifests=${{ needs.manifests.result }} docker=${{ needs.docker.result }} terraform=${{ needs.terraform.result }} frontend=${{ needs.frontend.result }}"
           if [ "${{ needs.tests.result }}" != "success" ] \
              || [ "${{ needs.manifests.result }}" != "success" ] \
              || [ "${{ needs.docker.result }}" != "success" ] \
-             || [ "${{ needs.terraform.result }}" != "success" ]; then
+             || [ "${{ needs.terraform.result }}" != "success" ] \
+             || [ "${{ needs.frontend.result }}" != "success" ]; then
             exit 1
           fi

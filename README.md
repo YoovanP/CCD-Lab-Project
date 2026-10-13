@@ -7,6 +7,7 @@ A real CPU sentiment API with opt-in text/speech adapters and a reproducible Mum
 ## What is included
 
 - FastAPI + pinned, quantized DistilBERT ONNX inference; strict validation, bounded concurrency/native timeout, Bearer-key authentication and streamed request-byte limits.
+- **Inference Studio**: polished, responsive browser playground with live model availability, real inference results, downloadable JSON/WAV and tab-only run history. Served by FastAPI, with no frontend build step or CDN dependencies.
 - Health/readiness probes, sanitized structured logs and real Prometheus-format HTTP metrics.
 - Non-root sentiment container with baked pinned model assets; Kubernetes Deployment/NodePort/HPA and a bounded k6 load test.
 - Terraform for Mumbai EC2/k3s, private ECR/S3, SSM deployment/access, scoped IAM, short CloudWatch log retention and an on-boot auto-stop timer.
@@ -35,7 +36,9 @@ uv run --python 3.12 --no-project --with-requirements requirements-dev.txt pytho
 
 The first package/model preparation needs Internet access; the baseline model assets total approximately 68 MB. The example leaves `API_KEY` empty for **loopback-only local development**. For auth-enabled local use, configure a nonempty key and supply the same `API_KEY` environment variable to the smoke checker. Cloud deployment refuses an empty key. Keep one worker; scale with Kubernetes replicas rather than duplicating every model in multiple API workers.
 
-Open `http://127.0.0.1:8000/docs`. POST `/api/inference` accepts:
+Open **[Inference Studio](http://127.0.0.1:8000/)** for the demo, or [Swagger](http://127.0.0.1:8000/docs) for the API. Choose an example and click **Analyze sentiment** (or Ctrl/Cmd + Enter). With authentication enabled, use **Session access** to enter the server key; it is held only in this tab's memory. Optional adapters remain visibly disabled unless enabled and ready. See the [frontend demo guide](docs/FRONTEND.md) for capabilities, safety and browser checks.
+
+POST `/api/inference` accepts:
 
 ```json
 {"model":"sentiment","input":"I love this product. It is absolutely wonderful!"}

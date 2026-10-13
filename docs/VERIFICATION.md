@@ -3,8 +3,9 @@
 Checked on **2026-10-13 (Asia/Kolkata)** in the user's working tree. This
 supersedes the earlier 32-test Phase 1 record. These are local checks, **not**
 a GitHub Actions run, successful AWS deployment, or performance benchmark.
-These results were collected before the implementation commit/push. No
-container image was built or published during local validation.
+The initial checks below predate the first implementation commit; the
+frontend section records later local checks performed before its PR.
+No application container image was built or published during these checks.
 
 ## Executed and passed
 
@@ -82,6 +83,33 @@ Qwen and baseline + Kitten metadata graphs resolved, but **the complete graph
 with the exact CPU Torch pin was not verified**. No heavy optional wheels or
 weights were installed and no Groq request was made. See the
 [profile details and operational limitations](MODEL_EXTENSIONS.md).
+
+## Inference Studio frontend — 2026-10-13
+
+The [frontend guide](FRONTEND.md) describes the demo at
+`http://127.0.0.1:8000/`. FastAPI serves the UI directly. The locally verified
+baseline uses the real cached quantized ONNX DistilBERT model; optional
+adapters remain disabled.
+
+| Check | Actual result | Scope |
+| --- | --- | --- |
+| Isolated frontend PR Python suite | **291 passed**, Python 3.12 / Windows, 9.72 s | Full suite on the actual publication tree, including 48 studio route/security cases and 10 shipped-asset structure checks; unrelated Floci tests are excluded |
+| Frontend JavaScript | **81 passed**, both module syntax checks passed | Offline Unicode/UTF-8 limits, strict API schemas, same-origin/auth scoping, consent, errors/cancellation and result validation |
+| Edge / Playwright acceptance | **22 checks passed**, Playwright 1.58.0 / installed Microsoft Edge | Real positive/negative/truncated/mobile ONNX inference, keyboard tabs, JSON download, navigation and in-memory history; optional-provider/auth/error cases are explicit HTTP fixtures |
+| Visual verification | Desktop 1440 px and mobile 390 px; no mobile horizontal overflow | Actual successful inference shown in [desktop](../results/frontend/demo-desktop.png) and [mobile](../results/frontend/demo-mobile.png) screenshots |
+| Publication source consistency | Passed, SHA-256 equality | UI, server integration and tests match the previously browser-verified implementation byte-for-byte |
+| Patch formatting | `git diff --check` passed | Frontend commit is separate from the existing serving foundation |
+
+Outputs and latencies are not seeded or fabricated. Single-run timings are
+**not benchmarks**. Optional generation/speech/transcription, API-key rejection,
+consent, 429/503/504 errors and cancellation are fixture contract checks, not
+real optional-model loading, audio-quality or paid-provider acceptance.
+Keys are kept out of application storage, URLs and result/history content.
+
+The [frontend CI job](../.github/workflows/ci.yml) participates in the existing
+CI gate. These are local pre-publication results, not proof of a GitHub Actions
+run. No AWS provisioning or paid provider calls occurred. Unrelated local
+Floci tooling is deliberately not part of this frontend PR.
 
 ## Still required before claiming a cloud demo
 

@@ -33,6 +33,7 @@ from app.observability import (
     normalize_method,
 )
 from app.schemas import ErrorResponse, InferenceRequest, InferenceResponse, ModelMetadata
+from app.studio import install_studio
 
 # Grace period for an in-flight native model load during shutdown. Native
 # threads cannot be force-killed, so shutdown first drains, then cancels.
@@ -462,6 +463,7 @@ def create_app(
 
     _expose_bearer_scheme(application, settings)
     install_extensions(application, settings)
+    install_studio(application, settings)
     return application
 
 
